@@ -1,7 +1,8 @@
 package com.wennersanner.libraryapi.resource;
 
 import com.wennersanner.libraryapi.dto.BookDTO;
-import com.wennersanner.libraryapi.exceptions.ApiErrors;
+import com.wennersanner.libraryapi.api.exceptions.ApiErrors;
+import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.service.BookService;
 import org.modelmapper.ModelMapper;
@@ -54,5 +55,11 @@ public class BookController {
         BindingResult bindingResult = ex.getBindingResult();
 
         return new ApiErrors(bindingResult);
+    }
+
+    @ExceptionHandler( BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors  handlerBusinessException(BusinessException ex) {
+        return new ApiErrors(ex);
     }
 }

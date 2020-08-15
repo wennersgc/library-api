@@ -2,6 +2,7 @@ package com.wennersanner.libraryapi.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wennersanner.libraryapi.dto.BookDTO;
+import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.service.BookService;
 import org.hamcrest.Matchers;
@@ -41,7 +42,7 @@ public class BookControllerTest {
     @DisplayName("Deve criar um livro com sucesso")
     public void createBookTest() throws Exception{
 
-        BookDTO dto = BookDTO.builder().author("Artur").title("Meu livro").isbn("121212").build();
+        BookDTO dto = createNewBook();
 
         Book savedBook = Book.builder().id(Long.valueOf((long)1)).author("Artur").title("Meu livro").isbn("121212").build();
 
@@ -65,6 +66,8 @@ public class BookControllerTest {
 
     }
 
+
+    //regra de integridade
     @Test
     @DisplayName("Deve lançar erro de validação quando não houver dados suficientes para criação do livro")
     public void createInvalidBookTest() throws Exception{
@@ -82,6 +85,39 @@ public class BookControllerTest {
                 //um mensagem de erro para cada proprieade obrigatoria
                 .andExpect( MockMvcResultMatchers.jsonPath("erros",  Matchers.hasSize(3)));
 
+    }
+
+    //regra de negocio
+    @Test
+    @DisplayName("Deve lançar erro ao tentar cadastrar livro com isbn já utilizado por outro")
+    public void createBookWithDuplicateIsbn() throws Exception{
+
+        BookDTO dto = createNewBook();
+
+        String json = new ObjectMapper().writeValueAsString(dto);
+
+        String mensageErro = "isbn já cadastrado";
+
+        BDDMockito.given(service.save(
+                Mockito.any(Book.class)))
+                .willThrow(new BusinessException(mensageErro));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(BOOK_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform( request )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("erros", Matchers.hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("erros[0]").value(mensageErro));
+
+    }
+
+
+    private BookDTO createNewBook() {
+        return BookDTO.builder().author("Artur").title("Meu livro").isbn("121212").build();
     }
 
 }
