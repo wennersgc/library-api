@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wennersanner.libraryapi.dto.BookDTO;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.service.BookService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,31 +43,44 @@ public class BookControllerTest {
 
         BookDTO dto = BookDTO.builder().author("Artur").title("Meu livro").isbn("121212").build();
 
-        Book savedBook = Book.builder().id(1).author("Artur").title("Meu livro").isbn("121212").build();
+        Book savedBook = Book.builder().id(Long.valueOf((long)1)).author("Artur").title("Meu livro").isbn("121212").build();
 
         BDDMockito.given(service.save(Mockito.any(Book.class))).willReturn(savedBook);
 
         String json = new ObjectMapper().writeValueAsString(dto);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(BOOK_API)
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(BOOK_API)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
 
-        mvc
-                .perform(request)
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("id").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("title").value(dto.getTitle()))
-                .andExpect(MockMvcResultMatchers.jsonPath("author").value(dto.getAuthor()))
-                .andExpect(MockMvcResultMatchers.jsonPath("isbn").value(dto.getIsbn()))
+        mvc.perform(request)
+                .andExpect( MockMvcResultMatchers.status().isCreated())
+                .andExpect( MockMvcResultMatchers.jsonPath("id").value(1))
+                .andExpect( MockMvcResultMatchers.jsonPath("title").value(dto.getTitle()))
+                .andExpect( MockMvcResultMatchers.jsonPath("author").value(dto.getAuthor()))
+                .andExpect( MockMvcResultMatchers.jsonPath("isbn").value(dto.getIsbn()))
         ;
 
     }
 
     @Test
-    @DisplayName("Deve lançar erro de validação quando não houver dados suficientes para ciração do livro")
-    public void createInvalidBookTest() {
+    @DisplayName("Deve lançar erro de validação quando não houver dados suficientes para criação do livro")
+    public void createInvalidBookTest() throws Exception{
+
+        String json = new ObjectMapper().writeValueAsString(new BookDTO());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(BOOK_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect( MockMvcResultMatchers.status().isBadRequest())
+                //um mensagem de erro para cada proprieade obrigatoria
+                .andExpect( MockMvcResultMatchers.jsonPath("erros",  Matchers.hasSize(3)));
 
     }
 

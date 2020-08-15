@@ -1,11 +1,16 @@
 package com.wennersanner.libraryapi.resource;
 
 import com.wennersanner.libraryapi.dto.BookDTO;
+import com.wennersanner.libraryapi.exceptions.ApiErrors;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.service.BookService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @SuppressWarnings("ALL")
 @RestController
@@ -22,7 +27,7 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus (HttpStatus.CREATED)
-    public BookDTO create(@RequestBody BookDTO dto) {
+    public BookDTO create(@RequestBody @Valid BookDTO dto) {
 //        Book entity =
 //                Book.builder()
 //                    .title(dto.getTitle())
@@ -41,5 +46,13 @@ public class BookController {
 //
 
         return modelMapper.map(entity, BookDTO.class);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleValidationExceptions(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+
+        return new ApiErrors(bindingResult);
     }
 }
