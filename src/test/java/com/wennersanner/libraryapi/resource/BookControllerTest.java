@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wennersanner.libraryapi.dto.BookDTO;
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
+import com.wennersanner.libraryapi.respository.BookRepository;
 import com.wennersanner.libraryapi.service.BookService;
+import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,13 +40,14 @@ public class BookControllerTest {
     @MockBean
     BookService service;
 
+
     @Test
     @DisplayName("Deve criar um livro com sucesso")
     public void createBookTest() throws Exception{
 
         BookDTO dto = createNewBook();
 
-        Book savedBook = Book.builder().id(Long.valueOf((long)1)).author("Artur").title("Meu livro").isbn("121212").build();
+        Book savedBook = createInvalidBook();
 
         BDDMockito.given(service.save(Mockito.any(Book.class))).willReturn(savedBook);
 
@@ -65,7 +68,6 @@ public class BookControllerTest {
         ;
 
     }
-
 
     //regra de integridade
     @Test
@@ -120,4 +122,7 @@ public class BookControllerTest {
         return BookDTO.builder().author("Artur").title("Meu livro").isbn("121212").build();
     }
 
+    private Book createInvalidBook() {
+        return Book.builder().id(Long.valueOf((long) 1)).author("Artur").title("Meu livro").isbn("121212").build();
+    }
 }

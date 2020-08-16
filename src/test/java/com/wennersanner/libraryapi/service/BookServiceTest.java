@@ -1,5 +1,6 @@
 package com.wennersanner.libraryapi.service;
 
+import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.respository.BookRepository;
 import com.wennersanner.libraryapi.service.impl.BookServiceImpl;
@@ -30,11 +31,7 @@ public class BookServiceTest {
     @Test
     @DisplayName("Deve salvar um livro")
     public void savedBookTest() {
-        Book book = Book.builder()
-                        .isbn("123")
-                        .author("Fulano")
-                        .title("As aventuras")
-                        .build();
+        Book book = createValidBook ( );
 
         Mockito.when( repository.save(book)).thenReturn(
                         Book.builder()
@@ -49,6 +46,27 @@ public class BookServiceTest {
         Assertions.assertThat(savedBook.getAuthor()).isEqualTo("Fulano");
         Assertions.assertThat(savedBook.getIsbn()).isEqualTo("123");
         Assertions.assertThat(savedBook.getTitle()).isEqualTo("As aventuras");
+    }
+
+
+    @Test
+    @DisplayName ("Deve lançar um erro de negocio ao tentar salvar um livro com isbn duplicado")
+    public void shouldNotSaveABookWithDuplicateISBN() {
+        Book book = createValidBook ();
+
+        Mockito.when ( repository.existsByIsbn(Mockito.anyString()) ).thenReturn(true);
+
+        Throwable exception = Assertions.catchThrowable(() -> service.save(book));
+
+        Assertions.assertThat (exception)
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("isbn já cadastrado");
+
+        Mockito.verify (repository, Mockito.never ()).save (book);
+    }
+
+    private Book createValidBook() {
+        return Book.builder().isbn("123").author("Fulano").title("As aventuras").build();
     }
 
 }

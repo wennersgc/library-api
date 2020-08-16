@@ -57,7 +57,7 @@ public class BookController {
         return new ApiErrors(bindingResult);
     }
 
-    @ExceptionHandler( BusinessException.class)
+    @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors  handlerBusinessException(BusinessException ex) {
         return new ApiErrors(ex);
