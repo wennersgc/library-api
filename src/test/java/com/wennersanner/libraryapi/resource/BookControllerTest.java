@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wennersanner.libraryapi.dto.BookDTO;
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
-import com.wennersanner.libraryapi.respository.BookRepository;
 import com.wennersanner.libraryapi.service.BookService;
-import org.assertj.core.api.Assertions;
+
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -163,11 +162,40 @@ public class BookControllerTest {
     }
 
 
+    @Test
+    @DisplayName("Deve deletar um livro")
+    public void deleteBookTest() throws Exception {
+
+        BDDMockito.given(service.getById(Mockito.anyLong())).willReturn(Optional.of(Book.builder().id(1l).build()));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .delete(BOOK_API.concat("/" + 1));
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isNoContent()) ;
+
+    }
+
+    @Test
+    @DisplayName("Deve retornar resource quando não encontrar um livro para deletar")
+    public void deleteInexistentBookTest() throws Exception {
+
+        BDDMockito.given(service.getById(Mockito.anyLong())).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .delete(BOOK_API.concat("/" + 1));
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isNotFound()) ;
+
+    }
+
+
     private BookDTO createNewBook() {
         return BookDTO.builder().author("Artur").title("Meu livro").isbn("121212").build();
     }
 
     private Book createInvalidBook() {
-        return Book.builder().id(Long.valueOf((long) 1)).author("Artur").title("Meu livro").isbn("121212").build();
+        return Book.builder().id(1l).author("Artur").title("Meu livro").isbn("121212").build();
     }
 }
