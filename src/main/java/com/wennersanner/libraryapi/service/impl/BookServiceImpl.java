@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService {
             throw new IllegalArgumentException("O id do livro não pode ser null");
         }
 
-        return  this.repository.save(book);
+        return this.repository.save(book);
     }
 
 }
