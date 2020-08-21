@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class BookServiceImpl implements BookService {
+public class BookServiceImpl implements BookService  {
 
     private BookRepository repository;
 
@@ -65,6 +65,11 @@ public class BookServiceImpl implements BookService {
         );
 
         return repository.findAll(example, pageRequest);
+    }
+
+    @Override
+    public Optional<Book> getBookByIsbn(String isbn) {
+        return null;
     }
 
 }
