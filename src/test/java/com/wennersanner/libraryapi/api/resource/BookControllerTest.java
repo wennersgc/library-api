@@ -5,7 +5,6 @@ import com.wennersanner.libraryapi.api.dto.BookDTO;
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.service.BookService;
-
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -181,7 +180,7 @@ public class BookControllerTest {
     }
 
     @Test
-    @DisplayName("Deve retornar resource quando não encontrar um livro para deletar")
+    @DisplayName("Deve retornar resource not found quando não encontrar um livro para deletar")
     public void deleteInexistentBookTest() throws Exception {
 
         BDDMockito.given(service.getById(Mockito.anyLong())).willReturn(Optional.empty());
