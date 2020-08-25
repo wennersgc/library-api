@@ -2,7 +2,7 @@ package com.wennersanner.libraryapi.service.impl;
 
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
-import com.wennersanner.libraryapi.respository.BookRepository;
+import com.wennersanner.libraryapi.repository.BookRepository;
 import com.wennersanner.libraryapi.service.BookService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -69,7 +69,7 @@ public class BookServiceImpl implements BookService  {
 
     @Override
     public Optional<Book> getBookByIsbn(String isbn) {
-        return null;
+        return repository.findByIsbn(isbn);
     }
 
 }

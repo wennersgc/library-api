@@ -1,7 +1,6 @@
 package com.wennersanner.libraryapi.repository;
 
 import com.wennersanner.libraryapi.model.Book;
-import com.wennersanner.libraryapi.respository.BookRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

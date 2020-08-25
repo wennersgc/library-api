@@ -2,14 +2,13 @@ package com.wennersanner.libraryapi.service;
 
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
-import com.wennersanner.libraryapi.respository.BookRepository;
+import com.wennersanner.libraryapi.repository.BookRepository;
 import com.wennersanner.libraryapi.service.impl.BookServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
@@ -174,6 +173,21 @@ public class BookServiceTest {
         Assertions.assertThat(result.getContent()).isEqualTo(lista);
         Assertions.assertThat(result.getPageable().getPageNumber()).isEqualTo(0);
         Assertions.assertThat(result.getPageable().getPageSize()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("Deve obter um livro pelo isbn")
+    public void getBookByIsbnTest() {
+
+        String isbn = "1230";
+        Mockito.when(repository.findByIsbn(isbn)).thenReturn(Optional.of(Book.builder().id(1l).isbn(isbn).build()));
+
+        Optional<Book> book = service.getBookByIsbn(isbn);
+
+        Assertions.assertThat(book.isPresent()).isTrue();
+        Assertions.assertThat(book.get().getId()).isEqualTo(1);
+        Assertions.assertThat(book.get().getIsbn()).isEqualTo(isbn);
+        Mockito.verify(repository, Mockito.times(1)).findByIsbn(isbn);
     }
 
     private Book createValidBook() {
