@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("Test")
@@ -82,5 +83,37 @@ public class LoanServiceTest {
 
         Mockito.verify(repository, Mockito.never()).save(savingLoan);
 
+    }
+
+    @Test
+    @DisplayName("Deve obter as informações de um empréstimo pelo id")
+    public void getLoadDetailsTest() {
+        Long id = 1l;
+
+        Loan loan = createLoan();
+        loan.setId(id);
+
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(loan));
+
+        Optional<Loan> result = service.getById(id);
+
+        Assertions.assertThat(result.isPresent()).isTrue();
+        Assertions.assertThat(result.get().getId()).isEqualTo(id);
+        Assertions.assertThat(result.get().getCustomer()).isEqualTo(loan.getCustomer());
+        Assertions.assertThat(result.get().getBook()).isEqualTo(loan.getBook());
+        Assertions.assertThat(result.get().getLoanDate()).isEqualTo(loan.getLoanDate());
+
+        Mockito.verify(repository).findById(id);
+    }
+
+    public Loan createLoan() {
+        Book book = Book.builder().id(1l).build();
+        String fulano = "Fulano";
+
+        return Loan.builder()
+                .book(book)
+                .customer(fulano)
+                .loanDate(LocalDate.now() )
+                .build();
     }
 }
