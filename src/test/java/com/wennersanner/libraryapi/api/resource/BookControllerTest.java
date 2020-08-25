@@ -1,7 +1,7 @@
-package com.wennersanner.libraryapi.resource;
+package com.wennersanner.libraryapi.api.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wennersanner.libraryapi.dto.BookDTO;
+import com.wennersanner.libraryapi.api.dto.BookDTO;
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.service.BookService;

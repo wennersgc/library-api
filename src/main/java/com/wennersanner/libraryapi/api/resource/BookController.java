@@ -1,6 +1,6 @@
-package com.wennersanner.libraryapi.resource;
+package com.wennersanner.libraryapi.api.resource;
 
-import com.wennersanner.libraryapi.dto.BookDTO;
+import com.wennersanner.libraryapi.api.dto.BookDTO;
 import com.wennersanner.libraryapi.api.exceptions.ApiErrors;
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("ALL")
@@ -102,17 +101,5 @@ public class BookController {
         return new PageImpl<BookDTO>(list, pageRequest, result.getTotalElements());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors handleValidationExceptions(MethodArgumentNotValidException ex) {
-        BindingResult bindingResult = ex.getBindingResult();
 
-        return new ApiErrors(bindingResult);
-    }
-
-    @ExceptionHandler(BusinessException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors  handlerBusinessException(BusinessException ex) {
-        return new ApiErrors(ex);
-    }
 }

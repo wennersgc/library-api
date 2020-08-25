@@ -1,4 +1,4 @@
-package com.wennersanner.libraryapi.dto;
+package com.wennersanner.libraryapi.api.dto;
 
 
 import lombok.*;
