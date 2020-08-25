@@ -6,6 +6,8 @@ import com.wennersanner.libraryapi.repository.LoanRepository;
 import com.wennersanner.libraryapi.service.LoanService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class LoanServiceImpl implements LoanService {
 
@@ -22,5 +24,15 @@ public class LoanServiceImpl implements LoanService {
            throw new BusinessException("Book alreday loaned");
         }
         return repository.save(loan);
+    }
+
+    @Override
+    public Optional<Loan> getById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void update(Loan loan) {
+
     }
 }

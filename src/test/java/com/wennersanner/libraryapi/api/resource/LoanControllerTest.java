@@ -2,6 +2,7 @@ package com.wennersanner.libraryapi.api.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wennersanner.libraryapi.api.dto.LoanDTO;
+import com.wennersanner.libraryapi.api.dto.ReturnedLoanDto;
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.model.Loan;
@@ -120,4 +121,48 @@ public class LoanControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("erros[0]").value("Book alreday loaned"));
 
     }
+
+    @Test
+    @DisplayName("Deve retornar um livro")
+    public void returnBookTest() throws Exception {
+        ReturnedLoanDto dto = ReturnedLoanDto.builder().returned(true).build();
+        Loan loan = Loan.builder().id(1l).build();
+
+        BDDMockito.given(loanService.getById(Mockito.anyLong()))
+                .willReturn(Optional.of(loan));
+
+        String json = new ObjectMapper().writeValueAsString(dto);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch(LOAN_API.concat("/1"))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(request)
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Mockito.verify(loanService,  Mockito.times(1)).update(loan);
+    }
+
+    @Test
+    @DisplayName("Deve retornar 404 quando tentar devolver um livro inexistente")
+    public void returnInexistentBookTest() throws Exception {
+        ReturnedLoanDto dto = ReturnedLoanDto.builder().returned(true).build();
+
+        BDDMockito.given(loanService.getById(Mockito.anyLong()))
+                .willReturn(Optional.empty());
+
+        String json = new ObjectMapper().writeValueAsString(dto);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.patch(LOAN_API.concat("/1"))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc
+                .perform(request)
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 }

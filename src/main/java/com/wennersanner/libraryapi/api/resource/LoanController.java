@@ -1,6 +1,7 @@
 package com.wennersanner.libraryapi.api.resource;
 
 import com.wennersanner.libraryapi.api.dto.LoanDTO;
+import com.wennersanner.libraryapi.api.dto.ReturnedLoanDto;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.model.Loan;
 import com.wennersanner.libraryapi.service.BookService;
@@ -37,6 +38,15 @@ public class LoanController {
         entity = loanService.save(entity);
 
         return entity.getId();
+    }
+
+    @PatchMapping("{id}")
+    public void returnBook(@PathVariable Long id, @RequestBody ReturnedLoanDto dto) {
+        Loan loan = loanService.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        loan.setReturned(dto.getReturned());
+
+        loanService.update(loan);
     }
 
 }
