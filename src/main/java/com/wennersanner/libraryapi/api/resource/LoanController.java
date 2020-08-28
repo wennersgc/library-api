@@ -8,6 +8,7 @@ import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.model.Loan;
 import com.wennersanner.libraryapi.service.BookService;
 import com.wennersanner.libraryapi.service.LoanService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,17 +23,18 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/loans")
+@RequiredArgsConstructor
 public class LoanController {
 
     private final LoanService loanService;
     private final BookService bookService;
     private final ModelMapper modelMapper;
 
-    public LoanController(LoanService loanService, BookService bookService, ModelMapper modelMapper) {
-        this.loanService = loanService;
-        this.bookService = bookService;
-        this.modelMapper = modelMapper;
-    }
+//    public LoanController(LoanService loanService, BookService bookService, ModelMapper modelMapper) {
+//        this.loanService = loanService;
+//        this.bookService = bookService;
+//        this.modelMapper = modelMapper;
+//    }
 
     @PostMapping
     @ResponseStatus (HttpStatus.CREATED)

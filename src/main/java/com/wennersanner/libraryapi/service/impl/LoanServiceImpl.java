@@ -2,6 +2,7 @@ package com.wennersanner.libraryapi.service.impl;
 
 import com.wennersanner.libraryapi.api.dto.LoanFilterDto;
 import com.wennersanner.libraryapi.exceptions.BusinessException;
+import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.model.Loan;
 import com.wennersanner.libraryapi.repository.LoanRepository;
 import com.wennersanner.libraryapi.service.LoanService;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,5 +45,17 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public Page<Loan> find(LoanFilterDto filter, Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public Page<Loan> getLoansByBook(Book book, Pageable pageable) {
+        return repository.findByBook(book, pageable);
+    }
+
+    @Override
+    public List<Loan> getAllLateLoans() {
+       final Integer loanDays = 4;
+        LocalDate threeDaysAgo = LocalDate.now().minusDays(loanDays);
+       return repository.findByLoanDateLessThanAndNotReturned(threeDaysAgo);
     }
 }

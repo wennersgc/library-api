@@ -5,10 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity (name = "book")
 @Data
@@ -24,6 +22,9 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
+
+    @OneToMany (mappedBy = "book")
+    private List<Loan> loans;
 
 
 }
