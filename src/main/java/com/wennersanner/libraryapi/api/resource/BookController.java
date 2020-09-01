@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @RequestMapping ("/api/books")
 @RequiredArgsConstructor
 @Api("API Book")
+@Slf4j
 public class BookController {
 
     @Autowired
@@ -47,6 +49,7 @@ public class BookController {
     @ResponseStatus (HttpStatus.CREATED)
     @ApiOperation("Cria um livro")
     public BookDTO create(@RequestBody @Valid BookDTO dto) {
+        log.info("Criando um livro para o isbn: {}", dto.getIsbn());
 //        Book entity =
 //                Book.builder()
 //                    .title(dto.getTitle())
@@ -71,6 +74,7 @@ public class BookController {
     @GetMapping("{id}")
     @ApiOperation("Mostra detalhes de um livro pelo ID")
     public BookDTO get(@PathVariable Long id) {
+        log.info("Obtendo um livro para o ID: {}", id);
         return service
                 .getById(id)
                 .map( book -> modelMapper.map(book, BookDTO.class))
