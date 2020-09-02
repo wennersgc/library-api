@@ -6,6 +6,7 @@ import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.model.Loan;
 import com.wennersanner.libraryapi.repository.LoanRepository;
 import com.wennersanner.libraryapi.service.LoanService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class LoanServiceImpl implements LoanService {
 
-    private LoanRepository repository;
-
-    public LoanServiceImpl(LoanRepository repository) {
-        this.repository = repository;
-    }
+    private final  LoanRepository repository;
+//
+//    public LoanServiceImpl(LoanRepository repository) {
+//        this.repository = repository;
+//    }
 
     @Override
     public Loan save(Loan loan) {

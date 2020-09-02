@@ -4,6 +4,7 @@ import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.repository.BookRepository;
 import com.wennersanner.libraryapi.service.BookService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -13,13 +14,14 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService  {
 
-    private BookRepository repository;
+    private final  BookRepository repository;
 
-    public BookServiceImpl(BookRepository repository) {
-        this.repository = repository;
-    }
+//    public BookServiceImpl(BookRepository repository) {
+//        this.repository = repository;
+//    }
 
     @Override
     public Book save(Book book) {
