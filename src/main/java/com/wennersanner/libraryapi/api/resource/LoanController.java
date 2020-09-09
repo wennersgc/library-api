@@ -30,12 +30,6 @@ public class LoanController {
     private final BookService bookService;
     private final ModelMapper modelMapper;
 
-//    public LoanController(LoanService loanService, BookService bookService, ModelMapper modelMapper) {
-//        this.loanService = loanService;
-//        this.bookService = bookService;
-//        this.modelMapper = modelMapper;
-//    }
-
     @PostMapping
     @ResponseStatus (HttpStatus.CREATED)
     public Long create(@RequestBody LoanDTO dto) {

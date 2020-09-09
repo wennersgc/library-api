@@ -37,33 +37,14 @@ public class BookController {
     private final ModelMapper modelMapper;
     private final LoanService loanService;
 
-//    public BookController(BookService service, ModelMapper modelMapper) {
-//        this.service = service;
-//        this.modelMapper = modelMapper;
-//    }
-
     @PostMapping
     @ResponseStatus (HttpStatus.CREATED)
     @ApiOperation("Cria um livro")
     public BookDTO create(@RequestBody @Valid BookDTO dto) {
         log.info("Criando um livro para o isbn: {}", dto.getIsbn());
-//        Book entity =
-//                Book.builder()
-//                    .title(dto.getTitle())
-//                    .author(dto.getAuthor())
-//                    .isbn(dto.getIsbn())
-//                    .build();
         Book entity = modelMapper.map(dto, Book.class);
 
         entity = service.save(entity);
-
-//        return  BookDTO.builder()
-//                    .id(entity.getId())
-//                    .title(entity.getTitle())
-//                    .author(entity.getAuthor())
-//                    .isbn(entity.getIsbn())
-//
-
         return modelMapper.map(entity, BookDTO.class);
     }
 
