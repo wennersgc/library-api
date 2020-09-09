@@ -21,10 +21,9 @@ public class LoanServiceImpl implements LoanService {
 
     private LoanRepository repository;
 
-    public  LoanServiceImpl(LoanRepository repository) {
+    public LoanServiceImpl(LoanRepository repository) {
         this.repository = repository;
     }
-
 
     @Override
     public Loan save(Loan loan) {

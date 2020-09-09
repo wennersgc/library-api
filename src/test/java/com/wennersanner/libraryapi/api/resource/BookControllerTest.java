@@ -5,6 +5,7 @@ import com.wennersanner.libraryapi.api.dto.BookDTO;
 import com.wennersanner.libraryapi.exceptions.BusinessException;
 import com.wennersanner.libraryapi.model.Book;
 import com.wennersanner.libraryapi.service.BookService;
+import com.wennersanner.libraryapi.service.LoanService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,9 @@ public class BookControllerTest {
 
     @MockBean
     BookService service;
+
+    @MockBean
+    LoanService loanService;
 
 
     @Test
