@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class BookServiceImpl implements BookService  {
 
-    private final  BookRepository repository;
+    private BookRepository repository;
 
-//    public BookServiceImpl(BookRepository repository) {
-//        this.repository = repository;
-//    }
+    public BookServiceImpl(BookRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Book save(Book book) {

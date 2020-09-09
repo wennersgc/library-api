@@ -33,12 +33,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BookController {
 
-    @Autowired
-    private BookService service;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private LoanService loanService;
+    private final BookService service;
+    private final ModelMapper modelMapper;
+    private final LoanService loanService;
 
 //    public BookController(BookService service, ModelMapper modelMapper) {
 //        this.service = service;

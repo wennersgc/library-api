@@ -16,14 +16,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class LoanServiceImpl implements LoanService {
 
-    private final  LoanRepository repository;
-//
-//    public LoanServiceImpl(LoanRepository repository) {
-//        this.repository = repository;
-//    }
+    private LoanRepository repository;
+
+    public  LoanServiceImpl(LoanRepository repository) {
+        this.repository = repository;
+    }
+
 
     @Override
     public Loan save(Loan loan) {
