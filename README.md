@@ -6,6 +6,7 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://github.com/wennersgc/rh-api)
 [![Build Status](https://travis-ci.org/wennersgc/library-api.svg?branch=master)](https://travis-ci.org/wennersgc/library-api)
+[![codecov](https://codecov.io/gh/wennersgc/library-api/branch/master/graph/badge.svg)](https://codecov.io/gh/wennersgc/library-api)
 
 ## Instalação
 
