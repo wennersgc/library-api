@@ -114,6 +114,7 @@
 	</dependencies>
 
 	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -140,7 +141,7 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>prepare-agent </goal>
+							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
@@ -151,6 +152,11 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
 			</plugin>
 		</plugins>
 	</build>
