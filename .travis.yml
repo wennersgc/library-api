@@ -3,6 +3,9 @@ sudo: false
 jdk:
   - oraclejdk14
 dist: trusty
+install:
+  - mvn -N io.takari:maven:wrapper
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 before_install:
   - chmod +x mvnw
 after_success:
