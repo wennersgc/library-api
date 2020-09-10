@@ -1,12 +1,9 @@
-language: java
 sudo: false
+language: java
 jdk:
   - oraclejdk14
 dist: trusty
-install:
 before_install:
   - chmod +x mvnw
-  - mvn -N io.takari:maven:wrapper
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 after_success:
   - bash <(curl -s https://codecov.io/bash)
